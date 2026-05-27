@@ -244,15 +244,41 @@ footer{
   transform: translateX(-50%) translateY(0);
 }
 
+.music-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid #f2d7da;
+  padding: 10px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  z-index: 9999;
+  transition: 0.3s;
+}
+
+.music-btn:hover {
+  transform: scale(1.05);
+}
+
+.music-btn:hover {
+  transform: scale(1.05);
+}
 </style>
   </head>
 
   <body>
-
+    <audio id="bgMusic" loop>
+      <source src="music.mp3" type="audio/mpeg">
+    </audio>
+    <div id="musicBtn" class="music-btn">🎵 Музыканы қосу</div>
     <section id="home">
       <div class="container">
         <div class="small">ШАҚЫРУ</div>
-        <h1>Aruzhan<br>Қыз Ұзату</h1>
+        <h1>Аружан<br>Қыз Ұзату</h1>
         <div class="text">
           Құрметті ағайын-туыс,<br>
           бауырлар мен достар!<br><br>
@@ -268,11 +294,11 @@ footer{
     <section id="details">
       <div class="container">
         <div class="small">ТОЙ ТУРАЛЫ</div>
-        <h1>17<br>Тамыз</h1>
+        <h1>16<br>Тамыз</h1>
         <div class="text">
           Той салтанаты<br>
           2026 жылдың<br>
-          17 тамыз күні өтеді 💕
+          16 тамыз күні өтеді 💕
         </div>
         <div class="info">
           <p><strong>Уақыты:</strong> 18:00</p>
@@ -302,6 +328,7 @@ footer{
 
         <div class="poll">
           <input type="text" id="name" placeholder="Аты-жөні" />
+          <h3></h3>
           <h3>Тойға келесіз бе?</h3>
 
           <label><input type="radio" name="attend" value="Иә"> Иә</label>
@@ -320,7 +347,7 @@ footer{
 
     <script>
 
-const targetDate = new Date("August 17, 2026 18:00:00").getTime();
+const targetDate = new Date("August 16, 2026 18:00:00").getTime();
 
 setInterval(function(){
   const now = new Date().getTime();
@@ -364,7 +391,38 @@ function showToast(message) {
     toast.classList.remove("show");
   }, 2500);
 }
+const music = document.getElementById("bgMusic");
+const musicBtn = document.getElementById("musicBtn");
 
+let isPlaying = false;
+
+// пробуем запустить при первом взаимодействии
+function startMusic() {
+  if (!isPlaying) {
+    music.play().then(() => {
+      isPlaying = true;
+      musicBtn.innerText = "🔊 Музыка қосулы";
+    }).catch(() => {
+      // если браузер блокирует — ничего страшного
+    });
+  }
+}
+
+// первый любой клик/тап запускает музыку
+document.addEventListener("click", startMusic, { once: true });
+document.addEventListener("touchstart", startMusic, { once: true });
+
+musicBtn.addEventListener("click", () => {
+  if (!isPlaying) {
+    music.play();
+    musicBtn.innerText = "🔊 Музыка қосулы";
+    isPlaying = true;
+  } else {
+    music.pause();
+    musicBtn.innerText = "🎵 Музыканы қосу";
+    isPlaying = false;
+  }
+});
 </script>
     <div id="toast" class="toast"></div>
   </body>
